@@ -22,7 +22,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-    public  class RecyclerTouchListener implements RecyclerView.OnItemTouchListener, OnActivityTouchListener {
+    public  class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
         private static final String TAG = "RecyclerTouchListener";
         final Handler handler = new Handler();
         Activity act;
@@ -36,15 +36,16 @@ import java.util.Set;
         List<Integer> optionViews;
         Set<Integer> ignoredViewTypes;
         // Cached ViewConfiguration and system-wide constant values
-        private int touchSlop;
-        private int minFlingVel;
-        private int maxFlingVel;
-        private long ANIMATION_STANDARD = 300;
-        private long ANIMATION_CLOSE = 150;
+        private final int touchSlop;
+        private final int minFlingVel;
+        private final int maxFlingVel;
+        private final long ANIMATION_STANDARD = 300;
+        private final long ANIMATION_CLOSE = 150;
         // Fixed properties
-        private RecyclerView rView;
+        private final RecyclerView rView;
         // private SwipeListener mSwipeListener;
-        private int bgWidth = 1, bgWidthLeft = 1; // 1 and not 0 to prevent dividing by zero
+        private int bgWidth = 1;
+        private final int bgWidthLeft = 1; // 1 and not 0 to prevent dividing by zero
         // Transient properties
         // private List<PendingDismissData> mPendingDismisses = new ArrayList<>();
         private int mDismissAnimationRefCount = 0;
@@ -870,7 +871,6 @@ import java.util.Set;
          * Gets coordinates from Activity and closes any
          * swiped rows if touch happens outside the recycler view
          */
-        @Override
         public void getTouchCoordinates(MotionEvent ev) {
             int y = (int) ev.getRawY();
             if (swipeable && bgVisible && ev.getActionMasked() == MotionEvent.ACTION_DOWN
@@ -901,6 +901,10 @@ import java.util.Set;
 
         public interface OnSwipeOptionsClickListener {
             void onSwipeOptionClicked(int viewID, int position);
+        }
+
+        public interface OnActivityTouchListener {
+            void getTouchCoordinates(MotionEvent ev);
         }
 
         public interface RecyclerTouchListenerHelper {

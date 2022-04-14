@@ -1,5 +1,6 @@
 package com.moejabs.assessment_test.ui.main
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,11 +11,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.moejabs.assessment_test.R
 import com.moejabs.assessment_test.model.PostModel
 
-class PostsAdapter: RecyclerView.Adapter<PostsAdapter.PostViewHolder>() {
-    private var postsList = emptyList<PostModel>()
+class PostsAdapter : RecyclerView.Adapter<PostsAdapter.PostViewHolder>() {
+    private var postsList = mutableListOf<PostModel>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
-        return PostViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.post_item, parent, false))
+        return PostViewHolder(
+            LayoutInflater.from(parent.context).inflate(R.layout.post_item, parent, false)
+        )
     }
 
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
@@ -27,10 +30,10 @@ class PostsAdapter: RecyclerView.Adapter<PostsAdapter.PostViewHolder>() {
 
     class PostViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val titleTV: TextView = itemView.findViewById(R.id.titleTV)
-        var bodyTV : TextView = itemView.findViewById(R.id.bodyTV)
+        var bodyTV: TextView = itemView.findViewById(R.id.bodyTV)
     }
 
-    fun setList(newPostsList: List<PostModel>) {
+    fun setList(newPostsList: MutableList<PostModel>) {
         val diffUtil = MyDiffUtil(postsList, newPostsList)
         val diffResults = DiffUtil.calculateDiff(diffUtil)
         postsList = newPostsList
@@ -38,13 +41,16 @@ class PostsAdapter: RecyclerView.Adapter<PostsAdapter.PostViewHolder>() {
     }
 
     fun addPost(p: PostModel) {
-        val newPostsList: List<PostModel> = postsList + p
+        postsList.add(0,p)
+        val newPostsList: MutableList<PostModel> = postsList
         setList(newPostsList)
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun editPost(position: Int, p: PostModel) {
-        postsList.toMutableList()[position] = p
+        postsList[position] = p
         setList(postsList)
+        notifyDataSetChanged()
     }
 
     fun deletePost(position: Int) {

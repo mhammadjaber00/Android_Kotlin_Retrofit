@@ -1,5 +1,6 @@
 package com.moejabs.assessment_test.ui.main
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,14 +11,19 @@ import kotlinx.coroutines.*
 
 class PostViewModel(): ViewModel() {
     val postsMutableLiveData: MutableLiveData<List<PostModel>> = MutableLiveData()
-    val singlePostMutableLiveData: MutableLiveData<PostModel> = MutableLiveData()
+    val createPostMutableLiveData: MutableLiveData<PostModel> = MutableLiveData()
+    val editPostMutableLiveData: MutableLiveData<PostModel> = MutableLiveData()
+    val deletePostMutableLiveData: MutableLiveData<Boolean> = MutableLiveData()
+
+    fun livecreate(): LiveData<PostModel> = createPostMutableLiveData
+    fun liveEdit(): LiveData<PostModel> = editPostMutableLiveData
+    fun liveDelete(): LiveData<Boolean> = deletePostMutableLiveData
 
 
     fun getPosts(userId: String) {
         viewModelScope.launch {
             val response = PostsClient.getINSTANCE().getPosts(userId)
             if(response.isSuccessful) {
-                println("this is the response getAll: ${response.body()}")
                 postsMutableLiveData.value = response.body()
             }
         }
@@ -27,8 +33,7 @@ class PostViewModel(): ViewModel() {
         viewModelScope.launch {
             val response = PostsClient.getINSTANCE().getPostDetails(id)
             if (response.isSuccessful) {
-                println("this is the response getOne: ${response.body()}")
-                singlePostMutableLiveData.value = response.body()
+                editPostMutableLiveData.value = response.body()
             }
         }
     }
@@ -37,8 +42,7 @@ class PostViewModel(): ViewModel() {
         viewModelScope.launch {
             val response = PostsClient.getINSTANCE().createPost(post)
             if(response.isSuccessful) {
-                println("this is the response create: ${response.body()}")
-                singlePostMutableLiveData.value = response.body()
+                createPostMutableLiveData.value = response.body()
             }
         }
     }
@@ -47,8 +51,7 @@ class PostViewModel(): ViewModel() {
         viewModelScope.launch {
             val response = PostsClient.getINSTANCE().editPost(id, post)
             if (response.isSuccessful) {
-                println("this is the response edit: ${response.body()}")
-                singlePostMutableLiveData.value = response.body()
+                editPostMutableLiveData.value = response.body()
             }
         }
     }
@@ -56,9 +59,8 @@ class PostViewModel(): ViewModel() {
     fun deletePost(id: String) {
         viewModelScope.launch  {
             val response = PostsClient.getINSTANCE().deletePost(id)
-            if (response.isSuccessful) {
-                println("this is the response delete: ${response.body()}" )
-            }
+            if(response.isSuccessful) deletePostMutableLiveData.value = true
+
         }
     }
 

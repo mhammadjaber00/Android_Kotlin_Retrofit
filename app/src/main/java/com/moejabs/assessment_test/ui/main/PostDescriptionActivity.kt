@@ -3,23 +3,23 @@ package com.moejabs.assessment_test.ui.main
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
-import android.widget.Toolbar
 import androidx.lifecycle.ViewModelProvider
-import com.moejabs.assessment_test.R
-import kotlinx.coroutines.DelicateCoroutinesApi
+import com.moejabs.assessment_test.databinding.ActivityPostDescriptionBinding
 
 class PostDescriptionActivity : AppCompatActivity() {
 
 
     private lateinit var postViewModel: PostViewModel
+    private lateinit var binding: ActivityPostDescriptionBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_post_description)
+        binding = ActivityPostDescriptionBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val postTitle: TextView = findViewById(R.id.postTitle)
-        val postDescription: TextView = findViewById(R.id.postDescription)
-        val toolBar: androidx.appcompat.widget.Toolbar = findViewById(R.id.descToolbar)
+        val postTitle: TextView = binding.postTitle
+        val postDescription: TextView = binding.postDescription
+        val toolBar: androidx.appcompat.widget.Toolbar = binding.descToolbar
 
         setSupportActionBar(toolBar)
 
@@ -32,7 +32,7 @@ class PostDescriptionActivity : AppCompatActivity() {
 
         postViewModel.getPostsDetails(id!!)
 
-        postViewModel.singlePostMutableLiveData.observe(this) {
+        postViewModel.editPostMutableLiveData.observe(this) {
             postModel ->
             postTitle.text = postModel.title
             postDescription.text = postModel.body
