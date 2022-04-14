@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="16dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp" >
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvcreate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Create a new post" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:id="@+id/closeSheet"
+            android:src="@drawable/ic_close_24px"
+            android:layout_alignParentEnd="true"/>
+
+        <EditText
+            android:id="@+id/etNewTitle"
+            android:layout_below="@id/tvcreate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Title"
+            android:minHeight="48dp" />
+
+        <EditText
+            android:id="@+id/etNewBody"
+            android:layout_below="@id/etNewTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Description"
+            android:minHeight="48dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnCreate"
+            android:layout_below="@id/etNewBody"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cornerRadius="7dp"
+            android:padding="15dp"
+            android:text="Create"
+            android:textAllCaps="false"/>
+
+    </RelativeLayout>
+</com.google.android.material.card.MaterialCardView>
