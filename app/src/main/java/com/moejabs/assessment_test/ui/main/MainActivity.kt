@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.moejabs.assessment_test.R
-import com.moejabs.assessment_test.adapter.PostsAdapter
 import com.moejabs.assessment_test.databinding.BottomSheetAddPostBinding
 import com.moejabs.assessment_test.model.PostModel
 import com.moejabs.assessment_test.ui.recyclerswipe.RecyclerTouchListener

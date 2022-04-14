@@ -1,4 +1,4 @@
-package com.moejabs.assessment_test.adapter
+package com.moejabs.assessment_test.ui.main
 
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.moejabs.assessment_test.R
 import com.moejabs.assessment_test.model.PostModel
-import com.moejabs.assessment_test.ui.main.MyDiffUtil
 
 class PostsAdapter: RecyclerView.Adapter<PostsAdapter.PostViewHolder>() {
     private var postsList = emptyList<PostModel>()

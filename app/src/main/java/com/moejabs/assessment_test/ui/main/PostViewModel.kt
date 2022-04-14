@@ -5,18 +5,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.moejabs.assessment_test.api.PostsClient
 import com.moejabs.assessment_test.model.PostModel
-import com.moejabs.assessment_test.repository.Repository
 import kotlinx.coroutines.*
 
 
-class PostViewModel(private val repository: Repository): ViewModel() {
+class PostViewModel(): ViewModel() {
     val postsMutableLiveData: MutableLiveData<List<PostModel>> = MutableLiveData()
     val singlePostMutableLiveData: MutableLiveData<PostModel> = MutableLiveData()
 
 
     fun getPosts(userId: String) {
         viewModelScope.launch {
-            val response = repository.getPosts(userId)
+            val response = PostsClient.getINSTANCE().getPosts(userId)
             if(response.isSuccessful) {
                 println("this is the response getAll: ${response.body()}")
                 postsMutableLiveData.value = response.body()
@@ -26,7 +25,7 @@ class PostViewModel(private val repository: Repository): ViewModel() {
 
     fun getPostsDetails(id: String) {
         viewModelScope.launch {
-            val response = repository.getPostDetails(id)
+            val response = PostsClient.getINSTANCE().getPostDetails(id)
             if (response.isSuccessful) {
                 println("this is the response getOne: ${response.body()}")
                 singlePostMutableLiveData.value = response.body()
@@ -36,7 +35,7 @@ class PostViewModel(private val repository: Repository): ViewModel() {
 
     fun createPost(post: PostModel) {
         viewModelScope.launch {
-            val response = repository.createPost(post)
+            val response = PostsClient.getINSTANCE().createPost(post)
             if(response.isSuccessful) {
                 println("this is the response create: ${response.body()}")
                 singlePostMutableLiveData.value = response.body()
@@ -46,7 +45,7 @@ class PostViewModel(private val repository: Repository): ViewModel() {
 
     fun editPost(id: String, post:PostModel) {
         viewModelScope.launch {
-            val response = repository.editPost(id, post)
+            val response = PostsClient.getINSTANCE().editPost(id, post)
             if (response.isSuccessful) {
                 println("this is the response edit: ${response.body()}")
                 singlePostMutableLiveData.value = response.body()
@@ -56,7 +55,7 @@ class PostViewModel(private val repository: Repository): ViewModel() {
 
     fun deletePost(id: String) {
         viewModelScope.launch  {
-            val response = repository.deletePost(id)
+            val response = PostsClient.getINSTANCE().deletePost(id)
             if (response.isSuccessful) {
                 println("this is the response delete: ${response.body()}" )
             }
