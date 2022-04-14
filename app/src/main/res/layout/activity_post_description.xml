@@ -28,17 +28,27 @@
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="15dp"
             android:layout_marginBottom="5dp"
             android:textStyle="bold"
             android:text="Title"
+            android:textColor="@color/black"
+            android:textSize="18sp"
             tools:ignore="HardcodedText" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/postTitle"
             android:layout_width="match_parent"
+            android:textSize="18sp"
+            android:textColor="@color/black"
             android:layout_height="wrap_content" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#FFE0E0E0"
+            android:layout_marginTop="20dp" />
     </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -52,7 +62,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="15dp"
+            android:textSize="18sp"
+            android:textColor="@color/black"
             android:layout_marginBottom="5dp"
             android:text="Description"
             tools:ignore="HardcodedText" />
@@ -61,6 +73,8 @@
             android:id="@+id/postDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="18sp"
             app:readMoreText="... Read More"
             app:readMoreMaxLine="2"
             app:readMoreColor="@color/purple_700" />

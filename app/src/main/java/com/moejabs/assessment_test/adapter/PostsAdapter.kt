@@ -1,19 +1,18 @@
-package com.moejabs.assessment_test.ui.main
+package com.moejabs.assessment_test.adapter
 
-import android.annotation.SuppressLint
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 
 import androidx.recyclerview.widget.RecyclerView
 import com.moejabs.assessment_test.R
-import com.moejabs.assessment_test.pojo.PostModel
+import com.moejabs.assessment_test.model.PostModel
+import com.moejabs.assessment_test.ui.main.MyDiffUtil
 
 class PostsAdapter: RecyclerView.Adapter<PostsAdapter.PostViewHolder>() {
-    private var postsList: MutableList<PostModel> = ArrayList()
-
+    private var postsList = emptyList<PostModel>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
         return PostViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.post_item, parent, false))
@@ -32,23 +31,26 @@ class PostsAdapter: RecyclerView.Adapter<PostsAdapter.PostViewHolder>() {
         var bodyTV : TextView = itemView.findViewById(R.id.bodyTV)
     }
 
-    fun setList(postsList: MutableList<PostModel>) {
-        this.postsList = postsList
-        notifyDataSetChanged()
+    fun setList(newPostsList: List<PostModel>) {
+        val diffUtil = MyDiffUtil(postsList, newPostsList)
+        val diffResults = DiffUtil.calculateDiff(diffUtil)
+        postsList = newPostsList
+        diffResults.dispatchUpdatesTo(this)
     }
 
     fun addPost(p: PostModel) {
-        postsList.add(0, p)
-        notifyItemInserted(0)
+        val newPostsList: List<PostModel> = postsList + p
+        setList(newPostsList)
     }
 
     fun editPost(position: Int, p: PostModel) {
-        postsList[position] = p
-        notifyItemChanged(position)
+        postsList.toMutableList()[position] = p
+        setList(postsList)
     }
 
     fun deletePost(position: Int) {
-        postsList.removeAt(position)
-        notifyItemRemoved(position)
+        val newPostsList = postsList.toMutableList()
+        newPostsList.removeAt(position)
+        setList(newPostsList)
     }
 }

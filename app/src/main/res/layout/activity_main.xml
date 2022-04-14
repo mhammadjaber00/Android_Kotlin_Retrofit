@@ -25,11 +25,12 @@
         android:layout_marginTop="56dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        tools:listitem="@layout/post_item"
+        app:layout_constraintTop_toTopOf="@id/mainToolbar"
+        app:layout_constraintVertical_bias="0.0"
         tools:itemCount="4"
-        app:layout_constraintTop_toTopOf="@id/mainToolbar" />
+        tools:listitem="@layout/post_item" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_add"
@@ -37,11 +38,11 @@
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         android:foregroundTint="@color/white"
-        app:srcCompat="@drawable/ic_add_fab_24px"
         android:tint="@color/white"
         app:backgroundTint="#3DD475"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:ignore="ContentDescription" />
+        app:srcCompat="@drawable/ic_add_fab_24px"
+        tools:ignore="ContentDescription,SpeakableTextPresentCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

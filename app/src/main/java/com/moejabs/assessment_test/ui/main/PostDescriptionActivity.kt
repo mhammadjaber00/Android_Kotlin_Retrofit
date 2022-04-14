@@ -8,7 +8,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.moejabs.assessment_test.R
 import kotlinx.coroutines.DelicateCoroutinesApi
 
-@DelicateCoroutinesApi
 class PostDescriptionActivity : AppCompatActivity() {
 
 

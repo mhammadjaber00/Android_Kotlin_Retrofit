@@ -13,20 +13,19 @@
         android:layout_alignParentEnd="true"
         android:layout_alignBottom="@id/rowFG"
         android:layout_alignTop="@id/rowFG"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
         android:gravity="right"
         android:orientation="horizontal"
-        android:padding="10dp">
+        >
 
         <RelativeLayout
             android:id="@+id/edit_post"
-            android:layout_width="48dp"
-            android:layout_height="match_parent"
+            android:layout_width="64dp"
+            android:layout_height="107dp"
             android:background="#4CC679"
             android:clickable="true"
             android:focusable="true"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            tools:ignore="SpeakableTextPresentCheck">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -46,12 +45,13 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:layout_width="48dp"
-            android:layout_height="match_parent"
+            android:layout_width="64dp"
+            android:layout_height="107dp"
             android:background="#E34F4F"
             android:clickable="true"
             android:focusable="true"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            tools:ignore="SpeakableTextPresentCheck">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -80,7 +80,6 @@
         android:elevation="4dp"
         android:focusable="true"
         android:orientation="horizontal"
-        android:layout_margin="10dp"
         android:visibility="visible">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -91,15 +90,18 @@
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/titleTV"
                 style="@style/TextAppearance.AppCompat.Headline"
-                android:layout_width="0dp"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="21dp"
+                android:fontFamily="sans-serif-medium"
                 android:textSize="18sp"
+                android:layout_marginTop="12dp"
                 app:layout_constraintBottom_toTopOf="@+id/bodyTV"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed"
+                android:maxLines="2"
                 tools:text="My worst fear when I was almost Three years old" />
 
             <com.google.android.material.textview.MaterialTextView
@@ -107,11 +109,11 @@
                 style="@style/TextAppearance.AppCompat.Medium"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:maxLines="2"
                 android:layout_marginTop="5dp"
                 android:layout_marginEnd="21dp"
-                android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:maxLines="2"
+                android:textSize="13sp"
+
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/titleTV"
                 app:layout_constraintTop_toBottomOf="@+id/titleTV"
@@ -124,6 +126,12 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="#F4F4F4"
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
