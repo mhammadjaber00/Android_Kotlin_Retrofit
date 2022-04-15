@@ -43,19 +43,20 @@ class PostsAdapter : RecyclerView.Adapter<PostsAdapter.PostViewHolder>() {
     fun addPost(p: PostModel) {
         postsList.add(0,p)
         val newPostsList: MutableList<PostModel> = postsList
-        setList(newPostsList)
+        //setList(newPostsList)
+        notifyItemInserted(0)
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     fun editPost(position: Int, p: PostModel) {
         postsList[position] = p
-        setList(postsList)
-        notifyDataSetChanged()
+        //setList(postsList)
+        notifyItemChanged(position, p)
     }
 
     fun deletePost(position: Int) {
         val newPostsList = postsList.toMutableList()
         newPostsList.removeAt(position)
-        setList(newPostsList)
+        //setList(newPostsList)
+        notifyItemRemoved(position)
     }
 }

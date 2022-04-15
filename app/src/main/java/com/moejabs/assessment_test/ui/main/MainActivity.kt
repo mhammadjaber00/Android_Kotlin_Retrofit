@@ -1,17 +1,20 @@
 package com.moejabs.assessment_test.ui.main
 
+import android.app.NotificationChannel
 import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.WindowManager
 import android.widget.Toast
+import android.widget.Toolbar
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.internal.ToolbarUtils
 import com.moejabs.assessment_test.R
 import com.moejabs.assessment_test.databinding.ActivityMainBinding
 import com.moejabs.assessment_test.databinding.BottomSheetAddPostBinding
@@ -38,6 +41,7 @@ class MainActivity : AppCompatActivity() {
         postViewModel = PostViewModel()
         setupRecyclerview()
 
+
         fabAddPost.setOnClickListener{
             val dialog = BottomSheetDialog(this)
             val dialogBinding = BottomSheetAddPostBinding.inflate(layoutInflater)
@@ -48,8 +52,8 @@ class MainActivity : AppCompatActivity() {
             }
 
             dialogBinding.btnCreate.setOnClickListener {
-                val newTitle = dialogBinding.etNewTitle.text?.toString() ?: "No Title"
-                val newBody = dialogBinding.etNewBody.text?.toString() ?: "No Description"
+                val newTitle = dialogBinding.etNewTitle.text.toString()
+                val newBody = dialogBinding.etNewBody.text.toString()
                 mPost = PostModel(1, newTitle, newBody)
                 postViewModel.createPost(mPost)
                 dialog.dismiss()
@@ -63,13 +67,13 @@ class MainActivity : AppCompatActivity() {
 
         postViewModel.getPosts("1")
 
-        postViewModel.postsMutableLiveData.observe(this) { postModels -> adapter.setList(postModels!!.toMutableList()) }
+        postViewModel.postsMutableLiveData.observe(this) { postModels -> adapter.setList(postModels) }
 
         postViewModel.liveDelete().observe(this) { adapter.deletePost(deletePosition) }
 
-        postViewModel.liveEdit().observe(this) { adapter.editPost(editPosition, mPost) }
+        postViewModel.liveEdit().observe(this) { adapter.editPost(editPosition, mPost)  }
 
-        postViewModel.livecreate().observe(this) { adapter.addPost(mPost) }
+        postViewModel.createPostMutableLiveData.observe(this) { adapter.addPost(mPost) }
 
     }
 
@@ -139,11 +143,23 @@ class MainActivity : AppCompatActivity() {
 
     private fun onClickEditPost(position: Int) {
         val dialog = BottomSheetDialog(this)
+
+        // Set global position to be called by observer later
+        editPosition = position
+
+        // Using same BottomSheet fragment of create post Action
         val dialogBinding = BottomSheetAddPostBinding.inflate(layoutInflater)
+
+        // Changed Button Title
         dialogBinding.tvcreate.text = "Edit post"
 
-        dialogBinding.etNewTitle.setText(postViewModel.postsMutableLiveData.value!![position].title)
-        dialogBinding.etNewBody.setText(postViewModel.postsMutableLiveData.value!![position].body)
+        // Set Edit text values to current post values
+        val title = postViewModel.postsMutableLiveData.value!![position].title
+        val body = postViewModel.postsMutableLiveData.value!![position].body
+
+        dialogBinding.etNewTitle.setText(title)
+        dialogBinding.etNewBody.setText(body)
+
         dialog.setContentView(dialogBinding.root)
 
         dialogBinding.closeSheet.setOnClickListener {

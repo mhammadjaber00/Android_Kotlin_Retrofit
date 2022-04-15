@@ -5,4 +5,4 @@ data class PostModel(
     var id: Int = -1,
     val title: String? = null,
     val body: String? = null
-) { constructor(userId: Int,title: String, body: String) : this(-1, userId, title, body) }
+) { constructor(userId: Int,title: String, body: String) : this(userId, -1, title, body) }

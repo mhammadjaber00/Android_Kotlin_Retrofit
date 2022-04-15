@@ -10,12 +10,12 @@ import kotlinx.coroutines.*
 
 
 class PostViewModel(): ViewModel() {
-    val postsMutableLiveData: MutableLiveData<List<PostModel>> = MutableLiveData()
+    val postsMutableLiveData: MutableLiveData<MutableList<PostModel>> = MutableLiveData()
+    val getPostMutableLiveData: MutableLiveData<PostModel> = MutableLiveData()
     val createPostMutableLiveData: MutableLiveData<PostModel> = MutableLiveData()
-    val editPostMutableLiveData: MutableLiveData<PostModel> = MutableLiveData()
-    val deletePostMutableLiveData: MutableLiveData<Boolean> = MutableLiveData()
+    private val editPostMutableLiveData: MutableLiveData<PostModel> = MutableLiveData()
+    private val deletePostMutableLiveData: MutableLiveData<Boolean> = MutableLiveData()
 
-    fun livecreate(): LiveData<PostModel> = createPostMutableLiveData
     fun liveEdit(): LiveData<PostModel> = editPostMutableLiveData
     fun liveDelete(): LiveData<Boolean> = deletePostMutableLiveData
 
@@ -33,7 +33,7 @@ class PostViewModel(): ViewModel() {
         viewModelScope.launch {
             val response = PostsClient.getINSTANCE().getPostDetails(id)
             if (response.isSuccessful) {
-                editPostMutableLiveData.value = response.body()
+                getPostMutableLiveData.value = response.body()
             }
         }
     }

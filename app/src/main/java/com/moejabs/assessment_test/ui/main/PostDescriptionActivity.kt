@@ -28,12 +28,12 @@ class PostDescriptionActivity : AppCompatActivity() {
 
         postViewModel = ViewModelProvider(this)[PostViewModel::class.java]
 
-        val id: String? = intent.getStringExtra("id")
+        val id: String = intent.getStringExtra("id")!!
 
-        postViewModel.getPostsDetails(id!!)
+        postViewModel.getPostsDetails(id)
 
-        postViewModel.editPostMutableLiveData.observe(this) {
-            postModel ->
+        postViewModel.getPostMutableLiveData.observe(this) {
+                postModel ->
             postTitle.text = postModel.title
             postDescription.text = postModel.body
         }

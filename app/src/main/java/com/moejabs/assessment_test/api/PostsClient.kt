@@ -24,7 +24,7 @@ class PostsClient() {
         retrofit.create(PostInterface::class.java)
     }
 
-    suspend fun getPosts(userId: String): Response<List<PostModel>> = postInterface.getPosts(userId)
+    suspend fun getPosts(userId: String): Response<MutableList<PostModel>> = postInterface.getPosts(userId)
 
     suspend fun getPostDetails(id: String): Response<PostModel> = postInterface.getPostDetails(id)
 

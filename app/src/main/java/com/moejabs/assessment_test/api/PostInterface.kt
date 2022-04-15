@@ -8,7 +8,7 @@ interface PostInterface {
     @GET("posts")
     suspend fun getPosts
                 (@Query("userId") userId: String)
-    : Response<List<PostModel>>
+    : Response<MutableList<PostModel>>
 
     @GET("posts/{id}")
     suspend fun getPostDetails
