@@ -1,11 +1,9 @@
-package com.moejabs.assessment_test.ui.main
+package com.moejabs.assessment_test.adapter
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.recyclerview.widget.DiffUtil
 
 import androidx.recyclerview.widget.RecyclerView
 import com.moejabs.assessment_test.R
@@ -34,29 +32,23 @@ class PostsAdapter : RecyclerView.Adapter<PostsAdapter.PostViewHolder>() {
     }
 
     fun setList(newPostsList: MutableList<PostModel>) {
-        val diffUtil = MyDiffUtil(postsList, newPostsList)
-        val diffResults = DiffUtil.calculateDiff(diffUtil)
         postsList = newPostsList
-        diffResults.dispatchUpdatesTo(this)
+        notifyDataSetChanged()
     }
 
     fun addPost(p: PostModel) {
         postsList.add(0,p)
-        val newPostsList: MutableList<PostModel> = postsList
-        //setList(newPostsList)
         notifyItemInserted(0)
     }
 
     fun editPost(position: Int, p: PostModel) {
         postsList[position] = p
-        //setList(postsList)
         notifyItemChanged(position, p)
     }
 
     fun deletePost(position: Int) {
-        val newPostsList = postsList.toMutableList()
-        newPostsList.removeAt(position)
-        //setList(newPostsList)
+        postsList.removeAt(position)
+        setList(postsList)
         notifyItemRemoved(position)
     }
 }

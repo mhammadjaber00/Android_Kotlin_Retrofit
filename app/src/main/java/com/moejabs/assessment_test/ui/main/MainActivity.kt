@@ -1,21 +1,19 @@
 package com.moejabs.assessment_test.ui.main
 
-import android.app.NotificationChannel
 import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.WindowManager
 import android.widget.Toast
-import android.widget.Toolbar
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.internal.ToolbarUtils
 import com.moejabs.assessment_test.R
+import com.moejabs.assessment_test.adapter.PostsAdapter
 import com.moejabs.assessment_test.databinding.ActivityMainBinding
 import com.moejabs.assessment_test.databinding.BottomSheetAddPostBinding
 import com.moejabs.assessment_test.model.PostModel
@@ -61,7 +59,6 @@ class MainActivity : AppCompatActivity() {
             dialog.dismissWithAnimation
             dialog.show()
         }
-
 
         postViewModel = ViewModelProvider(this)[PostViewModel::class.java]
 

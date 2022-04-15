@@ -60,7 +60,6 @@ class PostViewModel(): ViewModel() {
         viewModelScope.launch  {
             val response = PostsClient.getINSTANCE().deletePost(id)
             if(response.isSuccessful) deletePostMutableLiveData.value = true
-
         }
     }
 
