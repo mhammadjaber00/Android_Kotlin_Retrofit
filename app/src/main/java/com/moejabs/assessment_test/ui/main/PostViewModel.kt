@@ -1,5 +1,6 @@
 package com.moejabs.assessment_test.ui.main
 
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,14 +11,12 @@ import kotlinx.coroutines.*
 
 
 class PostViewModel(): ViewModel() {
+
     val postsMutableLiveData: MutableLiveData<MutableList<PostModel>> = MutableLiveData()
     val getPostMutableLiveData: MutableLiveData<PostModel> = MutableLiveData()
     val createPostMutableLiveData: MutableLiveData<PostModel> = MutableLiveData()
-    private val editPostMutableLiveData: MutableLiveData<PostModel> = MutableLiveData()
-    private val deletePostMutableLiveData: MutableLiveData<Boolean> = MutableLiveData()
-
-    fun liveEdit(): LiveData<PostModel> = editPostMutableLiveData
-    fun liveDelete(): LiveData<Boolean> = deletePostMutableLiveData
+    val editPostMutableLiveData: MutableLiveData<PostModel> = MutableLiveData()
+    val deletePostMutableLiveData: MutableLiveData<Boolean> = MutableLiveData()
 
 
     fun getPosts(userId: String) {

@@ -1,5 +1,6 @@
 package com.moejabs.assessment_test.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 
@@ -7,10 +8,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.moejabs.assessment_test.databinding.PostItemBinding
 import com.moejabs.assessment_test.model.PostModel
 
-private lateinit var binding: PostItemBinding
+
 
 class PostsAdapter(private var postsList: MutableList<PostModel> = mutableListOf()) : RecyclerView.Adapter<PostsAdapter.PostViewHolder>() {
-
+    private lateinit var binding: PostItemBinding
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
         binding = PostItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -30,12 +31,15 @@ class PostsAdapter(private var postsList: MutableList<PostModel> = mutableListOf
     }
 
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setList(newPostsList: MutableList<PostModel>) {
         if (postsList.isEmpty()) {
             postsList = newPostsList
             notifyDataSetChanged()
         }
     }
+
+    fun getList() = postsList
 
     fun addPost(p: PostModel) {
         postsList.add(0,p)

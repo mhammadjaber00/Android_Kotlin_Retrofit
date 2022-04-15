@@ -1,5 +1,6 @@
 package com.moejabs.assessment_test.ui.main
 
+import android.annotation.SuppressLint
 import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -9,6 +10,7 @@ import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -19,6 +21,7 @@ import com.moejabs.assessment_test.databinding.ActivityMainBinding
 import com.moejabs.assessment_test.databinding.BottomSheetAddPostBinding
 import com.moejabs.assessment_test.model.PostModel
 import com.moejabs.assessment_test.ui.recyclerswipe.RecyclerTouchListener
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -27,9 +30,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val adapter by lazy { PostsAdapter() }
     private lateinit var touchListener: RecyclerTouchListener
-    var deletePosition = -1
-    var editPosition = -1
-    var mPost = PostModel()
+    private lateinit var simpleCallback: ItemTouchHelper.SimpleCallback
+    private var deletePosition = -1
+    private var editPosition = -1
+    private var mPost = PostModel()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,7 +43,8 @@ class MainActivity : AppCompatActivity() {
         val fabAddPost: FloatingActionButton = binding.fabAdd
         postViewModel = PostViewModel()
         setupRecyclerview()
-
+        val itemTouchHelper = ItemTouchHelper(simpleCallback)
+        itemTouchHelper.attachToRecyclerView(recyclerView)
 
         fabAddPost.setOnClickListener{
             val dialog = BottomSheetDialog(this@MainActivity)
@@ -67,9 +72,9 @@ class MainActivity : AppCompatActivity() {
 
         postViewModel.postsMutableLiveData.observe(this) { postModels -> adapter.setList(postModels) }
 
-        postViewModel.liveDelete().observe(this) { adapter.deletePost(deletePosition) }
+        postViewModel.deletePostMutableLiveData.observe(this) { adapter.deletePost(deletePosition) }
 
-        postViewModel.liveEdit().observe(this) { adapter.editPost(editPosition, mPost)  }
+        postViewModel.editPostMutableLiveData.observe(this) { adapter.editPost(editPosition, mPost)  }
 
         postViewModel.createPostMutableLiveData.observe(this) { adapter.addPost(mPost) }
 
@@ -105,6 +110,25 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             }
+         simpleCallback = object: ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN, 0) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                val from = viewHolder.absoluteAdapterPosition
+                val to = target.absoluteAdapterPosition
+                Collections.swap(adapter.getList(), from, to)
+
+                recyclerView.adapter?.notifyItemMoved(from, to)
+
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                TODO("Not yet implemented")
+            }
+        }
         recyclerView.addOnItemTouchListener(touchListener)
     }
 
@@ -135,6 +159,7 @@ class MainActivity : AppCompatActivity() {
         dialog.window?.attributes = mLayoutParams
     }
 
+    @SuppressLint("SetTextI18n")
     private fun onClickEditPost(position: Int) {
         val dialog = BottomSheetDialog(this)
 
