@@ -1,39 +1,40 @@
 package com.moejabs.assessment_test.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 
 import androidx.recyclerview.widget.RecyclerView
-import com.moejabs.assessment_test.R
+import com.moejabs.assessment_test.databinding.PostItemBinding
 import com.moejabs.assessment_test.model.PostModel
 
-class PostsAdapter : RecyclerView.Adapter<PostsAdapter.PostViewHolder>() {
-    private var postsList = mutableListOf<PostModel>()
+private lateinit var binding: PostItemBinding
+
+class PostsAdapter(private var postsList: MutableList<PostModel> = mutableListOf()) : RecyclerView.Adapter<PostsAdapter.PostViewHolder>() {
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
-        return PostViewHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.post_item, parent, false)
-        )
+        binding = PostItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return PostViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
-        val currentPost = postsList[position]
-        holder.titleTV.text = currentPost.title
-        holder.bodyTV.text = currentPost.body
-    }
+    inner class PostViewHolder(binding: PostItemBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun getItemCount(): Int = postsList.size
 
-    class PostViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val titleTV: TextView = itemView.findViewById(R.id.titleTV)
-        var bodyTV: TextView = itemView.findViewById(R.id.bodyTV)
+    override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
+        val currentPost = postsList[position]
+        binding.apply {
+            titleTV.text = currentPost.title
+            bodyTV.text = currentPost.body
+        }
     }
 
+
     fun setList(newPostsList: MutableList<PostModel>) {
-        postsList = newPostsList
-        notifyDataSetChanged()
+        if (postsList.isEmpty()) {
+            postsList = newPostsList
+            notifyDataSetChanged()
+        }
     }
 
     fun addPost(p: PostModel) {

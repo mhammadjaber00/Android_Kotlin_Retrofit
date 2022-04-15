@@ -4,6 +4,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -41,7 +42,7 @@ class MainActivity : AppCompatActivity() {
 
 
         fabAddPost.setOnClickListener{
-            val dialog = BottomSheetDialog(this)
+            val dialog = BottomSheetDialog(this@MainActivity)
             val dialogBinding = BottomSheetAddPostBinding.inflate(layoutInflater)
             dialog.setContentView(dialogBinding.root)
 
@@ -87,11 +88,9 @@ class MainActivity : AppCompatActivity() {
                     intent.putExtra("id", postViewModel.postsMutableLiveData.value!![position].id.toString())
                     startActivity(intent)
                 }
-
                 override fun onIndependentViewClicked(independentViewID: Int, position: Int) {
                     // Not Needed
                 }
-
             })
             .setSwipeOptionViews(R.id.delete_post, R.id.edit_post)
             .setSwipeable(R.id.rowFG, R.id.rowBG)
@@ -101,13 +100,11 @@ class MainActivity : AppCompatActivity() {
                     R.id.delete_post -> {
                         onClickDeletePost(position)
                     }
-
                     R.id.edit_post -> {
                         onClickEditPost(position)
                     }
                 }
             }
-
         recyclerView.addOnItemTouchListener(touchListener)
     }
 
