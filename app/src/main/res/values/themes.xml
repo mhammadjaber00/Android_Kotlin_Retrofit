@@ -13,6 +13,9 @@
         <item name="android:statusBarColor" tools:targetApi="l">@color/white</item>
         <!-- Customize your theme here. -->
     </style>
-
+    <style name="MyAlertDialogTheme" parent="Theme.Material3.Light.Dialog.Alert">
+        <item name="windowFixedWidthMajor"></item>
+        <item name="windowFixedWidthMinor"></item>
+    </style>
 
 </resources>

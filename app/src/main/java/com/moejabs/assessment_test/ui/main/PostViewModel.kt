@@ -1,64 +1,76 @@
 package com.moejabs.assessment_test.ui.main
 
-import android.widget.Toast
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.moejabs.assessment_test.api.PostsClient
+import androidx.lifecycle.*
+import com.moejabs.assessment_test.adapter.PostsAdapter
 import com.moejabs.assessment_test.model.PostModel
+import com.moejabs.assessment_test.repository.PostRepository
 import kotlinx.coroutines.*
 
 
-class PostViewModel(): ViewModel() {
+class PostViewModel(private val postRepository: PostRepository = PostRepository()): ViewModel() {
 
-    val postsMutableLiveData: MutableLiveData<MutableList<PostModel>> = MutableLiveData()
-    val getPostMutableLiveData: MutableLiveData<PostModel> = MutableLiveData()
-    val createPostMutableLiveData: MutableLiveData<PostModel> = MutableLiveData()
-    val editPostMutableLiveData: MutableLiveData<PostModel> = MutableLiveData()
-    val deletePostMutableLiveData: MutableLiveData<Boolean> = MutableLiveData()
+    private val _postsMutableLiveData: MutableLiveData<MutableList<PostModel>> = MutableLiveData()
+    private val _getPostMutableLiveData: MutableLiveData<PostModel> = MutableLiveData()
+    private val _createPostMutableLiveData: MutableLiveData<PostModel> = MutableLiveData()
+    private val _editPostMutableLiveData: MutableLiveData<PostModel> = MutableLiveData()
+    private val _deletePostMutableLiveData: MutableLiveData<Boolean> = MutableLiveData()
+
+    val postsMutableLiveData: LiveData<MutableList<PostModel>>
+        get() = _postsMutableLiveData
+
+    val getPostMutableLiveData: LiveData<PostModel>
+        get() = _getPostMutableLiveData
+
+    val createPostMutableLiveData: LiveData<PostModel>
+        get() = _createPostMutableLiveData
+
+    val editPostMutableLiveData: LiveData<PostModel>
+        get() = _editPostMutableLiveData
+
+    val deletePostMutableLiveData: LiveData<Boolean>
+        get() = _deletePostMutableLiveData
 
 
-    fun getPosts(userId: String) {
+
+     fun getPosts(userId: String) {
         viewModelScope.launch {
-            val response = PostsClient.getINSTANCE().getPosts(userId)
-            if(response.isSuccessful) {
-                postsMutableLiveData.value = response.body()
-            }
+            val response = postRepository.getPosts(userId)
+            if(response.isSuccessful && postsMutableLiveData.value == null)
+                _postsMutableLiveData.value = response.body()
         }
     }
 
     fun getPostsDetails(id: String) {
         viewModelScope.launch {
-            val response = PostsClient.getINSTANCE().getPostDetails(id)
-            if (response.isSuccessful) {
-                getPostMutableLiveData.value = response.body()
-            }
+            val response = postRepository.getPostDetails(id)
+            if (response.isSuccessful)
+                _getPostMutableLiveData.value = response.body()
         }
     }
 
+
     fun createPost(post: PostModel) {
         viewModelScope.launch {
-            val response = PostsClient.getINSTANCE().createPost(post)
+            val response = postRepository.createPost(post)
             if(response.isSuccessful) {
-                createPostMutableLiveData.value = response.body()
+                _createPostMutableLiveData.postValue(response.body())
             }
         }
     }
 
     fun editPost(id: String, post:PostModel) {
         viewModelScope.launch {
-            val response = PostsClient.getINSTANCE().editPost(id, post)
-            if (response.isSuccessful) {
-                editPostMutableLiveData.value = response.body()
-            }
+            val response = postRepository.editPost(id, post)
+            if (response.isSuccessful)
+                _editPostMutableLiveData.postValue(response.body())
         }
     }
 
     fun deletePost(id: String) {
         viewModelScope.launch  {
-            val response = PostsClient.getINSTANCE().deletePost(id)
-            if(response.isSuccessful) deletePostMutableLiveData.value = true
+            val response = postRepository.deletePost(id)
+            if(response.isSuccessful)
+                _deletePostMutableLiveData.value = true
         }
     }
 

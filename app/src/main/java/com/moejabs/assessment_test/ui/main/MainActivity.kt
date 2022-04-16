@@ -5,10 +5,10 @@ import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -55,11 +55,11 @@ class MainActivity : AppCompatActivity() {
                 dialog.dismiss()
             }
 
-            dialogBinding.btnCreate.setOnClickListener {
-                val newTitle = dialogBinding.etNewTitle.text.toString()
-                val newBody = dialogBinding.etNewBody.text.toString()
-                mPost = PostModel(1, newTitle, newBody)
-                postViewModel.createPost(mPost)
+            dialogBinding.btnApply.setOnClickListener {
+                val newTitle = if(dialogBinding.etNewTitle.text.toString() != "")  dialogBinding.etNewTitle.text.toString() else "No Title"
+                val newBody = if(dialogBinding.etNewBody.text.toString() != "") dialogBinding.etNewBody.text.toString() else "No Description"
+                this.mPost = PostModel("1", newTitle, newBody)
+                postViewModel.createPost(this.mPost)
                 dialog.dismiss()
             }
             dialog.dismissWithAnimation
@@ -70,13 +70,25 @@ class MainActivity : AppCompatActivity() {
 
         postViewModel.getPosts("1")
 
-        postViewModel.postsMutableLiveData.observe(this) { postModels -> adapter.setList(postModels) }
+        postViewModel.postsMutableLiveData.observe(this) {
+                postModels -> adapter.setList(postModels)
+        }
 
-        postViewModel.deletePostMutableLiveData.observe(this) { adapter.deletePost(deletePosition) }
+        postViewModel.deletePostMutableLiveData.observe(this) {
+            adapter.deletePost(deletePosition)
+            adapter.notifyItemRemoved(deletePosition)
+        }
 
-        postViewModel.editPostMutableLiveData.observe(this) { adapter.editPost(editPosition, mPost)  }
+        postViewModel.editPostMutableLiveData.observe(this) { item ->
+            adapter.editPost(editPosition, item)
+            adapter.notifyItemChanged(editPosition, item)
+        }
 
-        postViewModel.createPostMutableLiveData.observe(this) { adapter.addPost(mPost) }
+        postViewModel.createPostMutableLiveData.observe(this) { item ->
+            adapter.addPost(item)
+            adapter.notifyItemInserted(0)
+        }
+
 
     }
 
@@ -149,18 +161,14 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(applicationContext, "Action Aborted", Toast.LENGTH_LONG).show()
             }
             .show()
+        dialog.window?.setLayout((resources.displayMetrics.widthPixels*0.8f).toInt(),
+            (resources.displayMetrics.heightPixels* 0.30f).toInt()
+        )
 
-        val mDisplayMetrics = windowManager.currentWindowMetrics
-        val mDisplayWidth = mDisplayMetrics.bounds.width()
-        val mDisplayHeight = mDisplayMetrics.bounds.height()
-        val mLayoutParams = WindowManager.LayoutParams()
-        mLayoutParams.width = (mDisplayWidth * 0.8f).toInt()
-        mLayoutParams.height = (mDisplayHeight * 0.25f).toInt()
-        dialog.window?.attributes = mLayoutParams
     }
 
     @SuppressLint("SetTextI18n")
-    private fun onClickEditPost(position: Int) {
+    private fun  onClickEditPost(position: Int) {
         val dialog = BottomSheetDialog(this)
 
         // Set global position to be called by observer later
@@ -185,12 +193,12 @@ class MainActivity : AppCompatActivity() {
             dialog.dismiss()
         }
 
-        dialogBinding.btnCreate.setOnClickListener {
-            val id = postViewModel.postsMutableLiveData.value!![position].id.toString()
+        dialogBinding.btnApply.setOnClickListener {
+            val id = postViewModel.postsMutableLiveData.value!![position].id
             val newTitle = dialogBinding.etNewTitle.text.toString()
             val newBody = dialogBinding.etNewBody.text.toString()
-            mPost = PostModel(1, newTitle, newBody)
-            postViewModel.editPost(id, mPost)
+            this.mPost = PostModel("1", newTitle, newBody)
+            postViewModel.editPost(id.toString(), this.mPost)
             dialog.dismiss()
         }
         dialog.show()

@@ -45,7 +45,7 @@
             android:minHeight="48dp" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnCreate"
+            android:id="@+id/btnApply"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/etNewBody"
