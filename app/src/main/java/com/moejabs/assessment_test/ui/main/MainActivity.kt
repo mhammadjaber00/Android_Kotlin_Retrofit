@@ -1,5 +1,7 @@
 package com.moejabs.assessment_test.ui.main
 
+import android.animation.Animator
+import android.animation.AnimatorInflater
 import android.annotation.SuppressLint
 import android.content.DialogInterface
 import android.content.Intent
@@ -12,6 +14,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -21,6 +24,7 @@ import com.moejabs.assessment_test.databinding.ActivityMainBinding
 import com.moejabs.assessment_test.databinding.BottomSheetAddPostBinding
 import com.moejabs.assessment_test.model.PostModel
 import com.moejabs.assessment_test.ui.recyclerswipe.RecyclerTouchListener
+import kotlinx.coroutines.*
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -46,6 +50,7 @@ class MainActivity : AppCompatActivity() {
         val itemTouchHelper = ItemTouchHelper(simpleCallback)
         itemTouchHelper.attachToRecyclerView(recyclerView)
 
+
         fabAddPost.setOnClickListener{
             val dialog = BottomSheetDialog(this@MainActivity)
             val dialogBinding = BottomSheetAddPostBinding.inflate(layoutInflater)
@@ -56,15 +61,23 @@ class MainActivity : AppCompatActivity() {
             }
 
             dialogBinding.btnApply.setOnClickListener {
-                val newTitle = if(dialogBinding.etNewTitle.text.toString() != "")  dialogBinding.etNewTitle.text.toString() else "No Title"
-                val newBody = if(dialogBinding.etNewBody.text.toString() != "") dialogBinding.etNewBody.text.toString() else "No Description"
-                this.mPost = PostModel("1", newTitle, newBody)
-                postViewModel.createPost(this.mPost)
-                dialog.dismiss()
+                    val newTitle =
+                        if (dialogBinding.etNewTitle.text.toString() != "")
+                            dialogBinding.etNewTitle.text.toString()
+                        else "No Title"
+
+                    val newBody =
+                        if (dialogBinding.etNewBody.text.toString() != "")
+                            dialogBinding.etNewBody.text.toString()
+                        else "No Description"
+
+                    this.mPost = PostModel("1", newTitle, newBody)
+                    postViewModel.createPost(this.mPost)
+                    dialog.dismiss()
             }
-            dialog.dismissWithAnimation
             dialog.show()
         }
+
 
         postViewModel = ViewModelProvider(this)[PostViewModel::class.java]
 
@@ -87,6 +100,7 @@ class MainActivity : AppCompatActivity() {
         postViewModel.createPostMutableLiveData.observe(this) { item ->
             adapter.addPost(item)
             adapter.notifyItemInserted(0)
+            recyclerView.smoothScrollToPosition(0)
         }
 
 

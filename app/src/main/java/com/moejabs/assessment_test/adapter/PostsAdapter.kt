@@ -1,18 +1,22 @@
 package com.moejabs.assessment_test.adapter
 
-import android.annotation.SuppressLint
+import android.text.Layout
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
+import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 
 import androidx.recyclerview.widget.RecyclerView
+import com.moejabs.assessment_test.R
 import com.moejabs.assessment_test.databinding.PostItemBinding
 import com.moejabs.assessment_test.model.PostModel
-
+import com.moejabs.utils.MyDiffCallback
 
 
 class PostsAdapter(
-    private var postsList: MutableList<PostModel> = mutableListOf(),
+    private var postsList: MutableList<PostModel> = mutableListOf()
     ) : RecyclerView.Adapter<PostsAdapter.PostViewHolder>() {
     private lateinit var binding: PostItemBinding
 
@@ -21,28 +25,35 @@ class PostsAdapter(
         return PostViewHolder(binding)
     }
 
-    inner class PostViewHolder(binding: PostItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class PostViewHolder constructor(binding: PostItemBinding) : RecyclerView.ViewHolder(binding.root) {
         val titleTV: TextView
         val bodyTV: TextView
+        val container: RelativeLayout
         init {
             titleTV = binding.titleTV
             bodyTV = binding.bodyTV
+            container = binding.container
         }
     }
 
 
     override fun onBindViewHolder(postViewHolder: PostViewHolder, position: Int) {
-        postViewHolder.titleTV.text = postsList[position].title
-        postViewHolder.bodyTV.text = postsList[position].body
+        postViewHolder.apply {
+            titleTV.text = postsList[position].title
+            bodyTV.text = postsList[position].body
+            container.animation = AnimationUtils.loadAnimation(itemView.context, R.anim.slide_in)
+        }
     }
 
     override fun getItemCount(): Int = postsList.size
 
 
-    @SuppressLint("NotifyDataSetChanged")
     fun setList(postsList: MutableList<PostModel>) {
-            this.postsList = postsList
-            notifyDataSetChanged()
+        val diffCallback = MyDiffCallback(this.postsList, postsList)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+        diffResult.dispatchUpdatesTo(this)
+
+        this.postsList = postsList
     }
 
     fun getList() = postsList
