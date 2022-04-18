@@ -77,7 +77,7 @@
             android:textSize="18sp"
             app:readMoreText="... Read More"
             app:readMoreMaxLine="2"
-            app:readMoreColor="@color/purple_700" />
+            app:readMoreColor="#3DD475" />
     </LinearLayout>
 
 

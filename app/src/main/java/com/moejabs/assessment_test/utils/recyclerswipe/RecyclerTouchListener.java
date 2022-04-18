@@ -1,4 +1,4 @@
-package com.moejabs.assessment_test.ui.recyclerswipe;
+package com.moejabs.assessment_test.utils.recyclerswipe;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;

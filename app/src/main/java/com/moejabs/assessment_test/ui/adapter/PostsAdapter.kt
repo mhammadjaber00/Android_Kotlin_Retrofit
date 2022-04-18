@@ -1,6 +1,5 @@
-package com.moejabs.assessment_test.adapter
+package com.moejabs.assessment_test.ui.adapter
 
-import android.text.Layout
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
@@ -12,11 +11,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.moejabs.assessment_test.R
 import com.moejabs.assessment_test.databinding.PostItemBinding
 import com.moejabs.assessment_test.model.PostModel
-import com.moejabs.utils.MyDiffCallback
+import com.moejabs.assessment_test.utils.MyDiffCallback
 
 
 class PostsAdapter(
-    private var postsList: MutableList<PostModel> = mutableListOf()
+    private val postsList: MutableList<PostModel> = mutableListOf(),
     ) : RecyclerView.Adapter<PostsAdapter.PostViewHolder>() {
     private lateinit var binding: PostItemBinding
 
@@ -52,8 +51,8 @@ class PostsAdapter(
         val diffCallback = MyDiffCallback(this.postsList, postsList)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
         diffResult.dispatchUpdatesTo(this)
-
-        this.postsList = postsList
+        this.postsList.clear()
+        this.postsList.addAll(postsList)
     }
 
     fun getList() = postsList

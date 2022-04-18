@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">assessment_test</string>
+    <string name="create_a_new_post">Create a new post</string>
+    <string name="title">Title</string>
+    <string name="enter_description">Enter Description</string>
+    <string name="create">Create</string>
+    <string name="delete_button_image_view">Delete button image view</string>
 </resources>

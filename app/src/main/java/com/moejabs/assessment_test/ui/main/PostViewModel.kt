@@ -1,11 +1,10 @@
 package com.moejabs.assessment_test.ui.main
 
 import androidx.lifecycle.*
-import com.moejabs.assessment_test.adapter.PostsAdapter
 import com.moejabs.assessment_test.model.PostModel
 import com.moejabs.assessment_test.repository.PostRepository
 import kotlinx.coroutines.*
-
+import kotlinx.coroutines.flow.MutableStateFlow
 
 class PostViewModel(private val postRepository: PostRepository = PostRepository()): ViewModel() {
 
@@ -36,7 +35,7 @@ class PostViewModel(private val postRepository: PostRepository = PostRepository(
         viewModelScope.launch {
             val response = postRepository.getPosts(userId)
             if(response.isSuccessful && postsMutableLiveData.value == null)
-                _postsMutableLiveData.value = response.body()
+                _postsMutableLiveData.postValue(response.body())
         }
     }
 
@@ -44,7 +43,7 @@ class PostViewModel(private val postRepository: PostRepository = PostRepository(
         viewModelScope.launch {
             val response = postRepository.getPostDetails(id)
             if (response.isSuccessful)
-                _getPostMutableLiveData.value = response.body()
+                _getPostMutableLiveData.postValue(response.body())
         }
     }
 
@@ -67,10 +66,10 @@ class PostViewModel(private val postRepository: PostRepository = PostRepository(
     }
 
     fun deletePost(id: String) {
-        viewModelScope.launch  {
+        viewModelScope.launch {
             val response = postRepository.deletePost(id)
             if(response.isSuccessful)
-                _deletePostMutableLiveData.value = true
+                _deletePostMutableLiveData.postValue( true )
         }
     }
 

@@ -1,30 +1,26 @@
 package com.moejabs.assessment_test.ui.main
 
-import android.animation.Animator
-import android.animation.AnimatorInflater
 import android.annotation.SuppressLint
+import android.app.ActionBar
 import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.WindowManager
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.moejabs.assessment_test.R
-import com.moejabs.assessment_test.adapter.PostsAdapter
+import com.moejabs.assessment_test.ui.adapter.PostsAdapter
 import com.moejabs.assessment_test.databinding.ActivityMainBinding
 import com.moejabs.assessment_test.databinding.BottomSheetAddPostBinding
 import com.moejabs.assessment_test.model.PostModel
-import com.moejabs.assessment_test.ui.recyclerswipe.RecyclerTouchListener
-import kotlinx.coroutines.*
+import com.moejabs.assessment_test.utils.recyclerswipe.RecyclerTouchListener
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -49,7 +45,6 @@ class MainActivity : AppCompatActivity() {
         setupRecyclerview()
         val itemTouchHelper = ItemTouchHelper(simpleCallback)
         itemTouchHelper.attachToRecyclerView(recyclerView)
-
 
         fabAddPost.setOnClickListener{
             val dialog = BottomSheetDialog(this@MainActivity)
@@ -176,7 +171,7 @@ class MainActivity : AppCompatActivity() {
             }
             .show()
         dialog.window?.setLayout((resources.displayMetrics.widthPixels*0.8f).toInt(),
-            (resources.displayMetrics.heightPixels* 0.30f).toInt()
+            ViewGroup.LayoutParams.WRAP_CONTENT
         )
 
     }
@@ -192,7 +187,7 @@ class MainActivity : AppCompatActivity() {
         val dialogBinding = BottomSheetAddPostBinding.inflate(layoutInflater)
 
         // Changed Button Title
-        dialogBinding.tvcreate.text = "Edit post"
+        dialogBinding.tvCreate.text = "Edit post"
 
         // Set Edit text values to current post values
         val title = postViewModel.postsMutableLiveData.value!![position].title

@@ -1,4 +1,4 @@
-package com.moejabs.utils
+package com.moejabs.assessment_test.utils
 
 import androidx.recyclerview.widget.DiffUtil
 import com.moejabs.assessment_test.model.PostModel
